@@ -1,6 +1,5 @@
 import { settings } from '@app/src/settings';
 import { Injectable } from '@nestjs/common';
-import { BlacklistTokensMongoRepository } from './blacklistTokens.MongoRepository';
 import { BlacklistTokensTypeOrmRepository } from './blacklistTokens.TypeOrmRepository';
 import { TokenDBType } from './blacklistTokens.scheme.types';
 
@@ -8,7 +7,6 @@ import { TokenDBType } from './blacklistTokens.scheme.types';
 export class BlacklistTokensService {
   private blacklistTokensRepository;
   constructor(
-    protected blacklistTokensMongoRepository: BlacklistTokensMongoRepository,
     protected blacklistTokensTypeOrmRepository: BlacklistTokensTypeOrmRepository,
   ) {
     this.blacklistTokensRepository = this.getBlacklistTokensRepository();
@@ -16,12 +14,11 @@ export class BlacklistTokensService {
 
   private getBlacklistTokensRepository() {
     const repositories = {
-      Mongo: this.blacklistTokensMongoRepository,
       TypeOrm: this.blacklistTokensTypeOrmRepository,
     };
     return (
       repositories[process.env.REPOSITORY] ||
-      this.blacklistTokensMongoRepository
+      this.blacklistTokensTypeOrmRepository
     );
   }
 

@@ -1,24 +1,14 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailAdapter } from '../../application/emailAdapter/emailAdapter';
-import { BlacklistTokensMongoRepository } from '../blacklistTokens/blacklistTokens.MongoRepository';
 import { BlacklistTokensService } from '../blacklistTokens/blacklistTokens.Service';
 import { BlacklistTokensTypeOrmRepository } from '../blacklistTokens/blacklistTokens.TypeOrmRepository';
 import { BlackListTokenEntity } from '../blacklistTokens/blacklistTokens.entitiy';
-import {
-  BlacklistToken,
-  BlacklistTokenSchema,
-} from '../blacklistTokens/blacklistTokens.scheme.types';
-import { RefreshTokensMetaMongoRepository } from '../refreshTokenMeta/refreshTokenMeta.MongoRepository';
+
 import { RefreshTokensMetaTypeOrmRepository } from '../refreshTokenMeta/refreshTokenMeta.TypeOrmRepository';
 import { RefreshTokenMetaEntity } from '../refreshTokenMeta/refreshTokenMeta.entity';
-import {
-  RefreshTokenMeta,
-  RefreshTokenMetaSchema,
-} from '../refreshTokenMeta/refreshTokenMeta.scheme.types';
 import { RefreshTokensMetaService } from '../refreshTokenMeta/refreshTokenMeta.service';
 import { SecurityController } from '../security/securityController';
 import { isEmailAlreadyInUseConstraint } from '../users/customValidators/isEmailAlreadyInUse.validator';
@@ -26,10 +16,9 @@ import { LoginAlreadyInUseConstraint } from '../users/customValidators/loginInUs
 import { SaUsersController } from '../users/sa.users.controller';
 import { UsersController } from '../users/users.controller';
 import { UserEntity } from '../users/users.entity';
-import { User, UserSchema } from '../users/users.mongo.scheme';
+
 import { UsersService } from '../users/users.service';
-import { UsersMongoRepository } from '../users/usersMongo.repository';
-import { UsersPgSqlRepository } from '../users/usersPgSql.Repository';
+
 import { UsersTypeOrmRepository } from '../users/usersTypeOrm.Repository';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -71,11 +60,6 @@ const strategies = [
       RefreshTokenMetaEntity,
       BlackListTokenEntity,
     ]),
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      { name: RefreshTokenMeta.name, schema: RefreshTokenMetaSchema },
-      { name: BlacklistToken.name, schema: BlacklistTokenSchema },
-    ]),
   ],
   controllers: [
     AuthController,
@@ -90,15 +74,14 @@ const strategies = [
     AuthService,
     JwtService,
     UsersService,
-    UsersPgSqlRepository,
-    UsersMongoRepository,
+
     UsersTypeOrmRepository,
     BasicAuthGuard,
     RefreshTokensMetaService,
-    RefreshTokensMetaMongoRepository,
+
     RefreshTokensMetaTypeOrmRepository,
     BlacklistTokensService,
-    BlacklistTokensMongoRepository,
+
     BlacklistTokensTypeOrmRepository,
   ],
   exports: [

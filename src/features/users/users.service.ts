@@ -5,8 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '../auth/jwt/jwtService';
 import { UserEntity } from './users.entity';
 import { UserDbType, userViewType, usersPaginationType } from './users.types';
-import { UsersMongoRepository } from './usersMongo.repository';
-import { UsersPgSqlRepository } from './usersPgSql.Repository';
+
 import { UsersTypeOrmRepository } from './usersTypeOrm.Repository';
 import bcrypt = require('bcrypt');
 ///
@@ -14,8 +13,6 @@ import bcrypt = require('bcrypt');
 export class UsersService {
   private usersRepository;
   constructor(
-    protected usersPgSqlRepository: UsersPgSqlRepository,
-    protected usersMongoRepository: UsersMongoRepository,
     protected usersTypeOrmRepository: UsersTypeOrmRepository,
     protected jwtService: JwtService,
     protected refreshTokensMetaService: RefreshTokensMetaService,
@@ -25,12 +22,10 @@ export class UsersService {
 
   private getUsersRepository() {
     const repositories = {
-      Mongo: this.usersMongoRepository,
-      PgSql: this.usersPgSqlRepository,
       TypeOrm: this.usersTypeOrmRepository,
     };
 
-    return repositories[process.env.REPOSITORY] || this.usersMongoRepository;
+    return repositories[process.env.REPOSITORY] || this.usersTypeOrmRepository;
   }
 
   async findUser(id: string) {

@@ -12,12 +12,11 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AuthModule } from './features/auth/auth.module';
-import { BlogsModule } from './features/blogs/blogs.module';
 import { QuizGameModule } from './features/QuizGame/QuizGame.module';
 import { TestingModule } from './features/testing/testing.module';
 import { settings } from './settings';
 
-const modules = [BlogsModule, AuthModule, QuizGameModule, TestingModule];
+const modules = [AuthModule, QuizGameModule, TestingModule];
 
 @Module({
   imports: [

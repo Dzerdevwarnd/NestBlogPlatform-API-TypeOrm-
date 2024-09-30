@@ -1,7 +1,6 @@
 import { settings } from '@app/src/settings';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '../auth/jwt/jwtService';
-import { RefreshTokensMetaMongoRepository } from './refreshTokenMeta.MongoRepository';
 import { RefreshTokensMetaTypeOrmRepository } from './refreshTokenMeta.TypeOrmRepository';
 import { refreshTokensMetaTypeDB } from './refreshTokenMeta.scheme.types';
 
@@ -9,7 +8,6 @@ import { refreshTokensMetaTypeDB } from './refreshTokenMeta.scheme.types';
 export class RefreshTokensMetaService {
   private refreshTokensMetaRepository;
   constructor(
-    protected refreshTokensMetaMongoRepository: RefreshTokensMetaMongoRepository,
     protected refreshTokensMetaTypeOrmRepository: RefreshTokensMetaTypeOrmRepository,
     protected jwtService: JwtService,
   ) {
@@ -18,12 +16,11 @@ export class RefreshTokensMetaService {
 
   private getRefreshTokensMetaRepository() {
     const repositories = {
-      Mongo: this.refreshTokensMetaMongoRepository,
       TypeOrm: this.refreshTokensMetaTypeOrmRepository,
     };
     return (
       repositories[process.env.REPOSITORY] ||
-      this.refreshTokensMetaMongoRepository
+      this.refreshTokensMetaTypeOrmRepository
     );
   }
 
